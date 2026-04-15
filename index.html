@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soul Stretch — Where You Come Back to Yourself</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & scrollbar ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    * { scrollbar-width: thin; scrollbar-color: #2D5143 transparent; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-thumb { background-color: #2D5143; border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+
+    /* ── Brand Tokens ── */
+    :root {
+      --forest:      #2D5143;   /* Soul Stretch emerald — primary dark */
+      --forest-deep: #1A3228;   /* deeper forest for overlays */
+      --forest-mid:  #3D6B59;   /* lighter forest for accents */
+      --sage:        #8FAF9A;   /* soft sage — mid accent */
+      --cream:       #F0E8DA;   /* Soul Stretch brand cream */
+      --cream-light: #FAF6EF;   /* lightest cream — gallery bg */
+      --cream-mid:   #E4DCCF;   /* press bar, borders */
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans:  'Inter', system-ui, sans-serif;
+    }
+
+    html { font-size: 16px; line-height: 1.5; }
+    body {
+      font-family: var(--sans);
+      background-color: var(--cream);
+      color: var(--forest);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    em { font-style: italic; }
+
+    /* ── Nav ── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 32px;
+      transition: background 0.5s ease, padding 0.5s ease, box-shadow 0.5s ease;
+    }
+    #nav.scrolled {
+      background: rgba(20, 42, 30, 0.96);
+      padding: 14px 32px;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .nav-logo-img {
+      height: 120px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      filter: brightness(1.5) contrast(1.1);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    /* Regular nav links */
+    .nav-links a.nav-item {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.62);
+      position: relative;
+      transition: color 0.25s ease;
+    }
+    .nav-links a.nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.45);
+      transition: width 0.3s ease;
+    }
+    .nav-links a.nav-item:hover { color: rgba(255,255,255,0.95); }
+    .nav-links a.nav-item:hover::after { width: 100%; }
+    /* CTA — Start */
+    .nav-start {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 10px 24px;
+      background: transparent;
+      transition: color 0.5s ease, border-color 0.3s ease, transform 0.3s ease;
+    }
+    .nav-start::before { background: white; }
+    .nav-start:hover {
+      color: var(--forest-deep);
+      border-color: white;
+      transform: scale(1.04);
+    }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 101;
+      position: relative;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: rgba(255,255,255,0.75);
+      transition: transform 0.35s ease, opacity 0.35s ease, background 0.3s ease;
+    }
+    .hamburger.open span { background: white; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── Mobile full-screen overlay ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: #1A3228;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu.open-active { opacity: 1; }
+    .mob-link {
+      font-family: var(--serif);
+      font-size: clamp(36px, 9vw, 56px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.01em;
+      padding: 14px 0;
+      transition: color 0.2s ease;
+    }
+    .mob-link:hover { color: white; }
+    .mobile-menu-start {
+      margin-top: 36px;
+      font-size: 11px !important;
+      font-weight: 400 !important;
+      letter-spacing: 0.18em !important;
+      text-transform: uppercase !important;
+      color: rgba(255,255,255,0.8) !important;
+      border: 1px solid rgba(255,255,255,0.3) !important;
+      padding: 13px 36px !important;
+      font-family: var(--sans) !important;
+      background: transparent !important;
+    }
+    .mobile-menu-start::before { background: white; }
+    .mobile-menu-start:hover { color: var(--forest-deep) !important; }
+
+    @media (max-width: 767px) {
+      #nav { padding: 16px 20px; }
+      #nav.scrolled { padding: 12px 20px; }
+      .nav-logo-img { height: 80px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      background-color: var(--forest-deep);
+    }
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right,
+          rgba(10,25,25,0.65) 0%,
+          rgba(10,25,25,0.35) 45%,
+          rgba(10,25,25,0.05) 75%,
+          transparent 100%),
+        linear-gradient(to top,
+          rgba(10,25,25,0.50) 0%,
+          transparent 35%);
+    }
+    /* Subtle sage vignette at the very top */
+    .hero-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 120% 60% at 20% 80%,
+        rgba(45,81,67,0.18) 0%, transparent 70%);
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 4;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      height: 100%;
+      padding: 0 16px 50px;
+    }
+    @media (min-width: 768px)  { .hero-inner { padding: 0 32px 90px; } }
+    @media (min-width: 1024px) { .hero-inner { padding: 0 32px 80px; } }
+
+    .hero-text h1 {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(44px, 7vw, 92px);
+      line-height: 1.04;
+      color: white;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .hero-text h1 em { font-weight: 300; }
+    .hero-tagline {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      font-weight: 300;
+      margin-bottom: 28px;
+    }
+    /* ── Flow Hover Buttons ── */
+    .btn-outline-white,
+    .btn-solid-cream,
+    .btn-service,
+    .mobile-menu-book,
+    .nav-book {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      overflow: hidden;
+      z-index: 0;
+      font-family: var(--sans);
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      transition: transform 0.3s ease, color 0.5s ease, border-color 0.3s ease;
+    }
+    /* The sweeping circle */
+    .btn-outline-white::before,
+    .btn-solid-cream::before,
+    .btn-service::before,
+    .mobile-menu-book::before,
+    .nav-book::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: 100%;
+      transform: translateX(150%) translateY(150%) scale(2.5);
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-outline-white:hover::before,
+    .btn-solid-cream:hover::before,
+    .btn-service:hover::before,
+    .mobile-menu-book:hover::before,
+    .nav-book:hover::before {
+      transform: translateX(0%) translateY(0%) scale(2.5);
+    }
+    .btn-outline-white:active,
+    .btn-solid-cream:active,
+    .btn-service:active,
+    .mobile-menu-book:active,
+    .nav-book:active {
+      transform: scale(0.96);
+    }
+
+    /* ── Focus-visible (keyboard navigation) ── */
+    .btn-outline-white:focus-visible,
+    .mobile-menu-start:focus-visible,
+    .mob-link:focus-visible,
+    .nav-start:focus-visible,
+    .nav-links a.nav-item:focus-visible,
+    .footer-nav a:focus-visible {
+      outline: 2px solid rgba(255,255,255,0.7);
+      outline-offset: 4px;
+    }
+    .btn-solid-cream:focus-visible {
+      outline: 2px solid var(--cream);
+      outline-offset: 4px;
+    }
+    .btn-service:focus-visible,
+    .service-trigger:focus-visible,
+    .tc-dot:focus-visible {
+      outline: 2px solid var(--forest);
+      outline-offset: 4px;
+    }
+
+    /* Outline white variant — used on dark/video bg */
+    .btn-outline-white {
+      font-size: 11px;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.5);
+      padding: 12px 28px;
+      background: transparent;
+    }
+    .btn-outline-white::before { background: white; }
+    .btn-outline-white:hover {
+      color: var(--forest-deep);
+      border-color: white;
+      transform: scale(1.04);
+    }
+
+    /* Solid cream variant — used on forest bg */
+    .btn-solid-cream {
+      font-size: 11px;
+      color: var(--forest);
+      background: var(--cream);
+      border: 1px solid var(--cream);
+      padding: 13px 30px;
+    }
+    .btn-solid-cream::before { background: var(--forest); }
+    .btn-solid-cream:hover {
+      color: var(--cream);
+      border-color: var(--forest);
+      transform: scale(1.04);
+    }
+
+    /* Forest outline variant — used on cream/light backgrounds */
+    .btn-service {
+      font-size: 11px;
+      color: var(--forest);
+      border: 1px solid rgba(45,81,67,0.4);
+      padding: 12px 28px;
+      background: transparent;
+      text-decoration: none;
+    }
+    .btn-service::before { background: var(--forest); }
+    .btn-service:hover {
+      color: var(--cream);
+      border-color: var(--forest);
+      transform: scale(1.04);
+    }
+
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 4px;
+    }
+    .hero-scroll span {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      writing-mode: vertical-rl;
+    }
+    .hero-scroll-line {
+      width: 1px;
+      height: 52px;
+      background: linear-gradient(to bottom, var(--sage), transparent);
+      opacity: 0.6;
+    }
+
+    /* ── Soul Messages ── */
+    /* Scroll-margin so fixed nav never covers section headings */
+    #messages, #realign, #services, #retreats, #journey, #testimonials, #presence {
+      scroll-margin-top: 120px;
+    }
+
+    .messages-section {
+      background-color: var(--cream);
+      padding: 120px 16px 80px;
+    }
+    @media (min-width: 768px) { .messages-section { padding: 120px 32px 90px; } }
+    .messages-section .inner { max-width: 1200px; margin: 0 auto; }
+    .messages-heading {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(52px, 9.5vw, 128px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--forest);
+      margin-bottom: 56px;
+      padding-bottom: 0.1em;
+    }
+    .messages-body {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (min-width: 768px) { .messages-body { grid-template-columns: 1fr 1fr; gap: 64px; } }
+    .messages-text p {
+      font-size: 16px;
+      line-height: 1.88;
+      color: rgba(45,81,67,0.72);
+      max-width: 480px;
+      font-weight: 300;
+    }
+    .messages-text p + p { margin-top: 18px; }
+    .messages-text p.msg-open {
+      font-size: 16px;
+      color: rgba(45,81,67,0.90);
+    }
+    .messages-text p.msg-muted {
+      color: rgba(45,81,67,0.70);
+    }
+    .messages-text p.msg-close {
+      font-size: 15px;
+      color: rgba(45,81,67,0.80);
+    }
+    .msg-word {
+      display: block;
+      color: var(--forest);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    /* Sage accent rule before body text */
+    .messages-text::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--sage);
+      margin-bottom: 22px;
+    }
+    .messages-img {
+      width: 100%;
+      aspect-ratio: 5 / 6;
+      object-fit: cover;
+    }
+
+    /* ── Press ── */
+
+    /* ── Testimonials Carousel ── */
+    .testimonials-carousel {
+      background-color: var(--cream);
+      padding: 96px 0 80px;
+    }
+    .testimonials-header {
+      max-width: 1200px;
+      margin: 0 auto 48px;
+      padding: 0 32px;
+    }
+    .testimonials-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--forest-mid);
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .testimonials-heading {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(36px, 4.5vw, 56px);
+      color: var(--forest);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+    .tc-track-wrap {
+      overflow: hidden;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .tc-track {
+      display: flex;
+      gap: 0;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+    }
+    .tc-card {
+      flex: 0 0 100%;
+      background: var(--cream-light);
+      border: 1px solid rgba(45,81,67,0.1);
+      padding: 56px 64px 52px;
+      position: relative;
+      transition: box-shadow 0.3s ease;
+    }
+    .tc-card:hover {
+      box-shadow: 0 8px 32px rgba(45,81,67,0.08);
+    }
+    .tc-card::before {
+      content: '\201C';
+      font-family: var(--serif);
+      font-size: 110px;
+      line-height: 0.75;
+      color: var(--sage);
+      opacity: 0.25;
+      position: absolute;
+      top: 24px;
+      left: 30px;
+      pointer-events: none;
+      user-select: none;
+    }
+    .tc-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(16px, 1.5vw, 20px);
+      line-height: 1.75;
+      color: var(--forest);
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .tc-name {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(61,107,89,0.65);
+      font-weight: 400;
+    }
+    .tc-controls {
+      max-width: 860px;
+      margin: 32px auto 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .tc-dots {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .tc-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(45,81,67,0.2);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      border: none;
+      padding: 0;
+    }
+    .tc-dot.active {
+      background: var(--forest);
+      transform: scale(1.5);
+    }
+    .tc-progress {
+      flex: 1;
+      height: 1px;
+      background: rgba(45,81,67,0.1);
+      margin-left: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tc-progress-bar {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      background: var(--sage);
+      width: 0%;
+    }
+    @media (max-width: 767px) {
+      .testimonials-carousel { padding: 120px 20px 64px; }
+      .testimonials-header { padding: 0; margin-bottom: 32px; }
+      .tc-track-wrap { max-width: 100%; margin: 0; }
+      .tc-card { flex: 0 0 100%; padding: 48px 28px 40px; }
+      .tc-card::before { font-size: 64px; top: 14px; left: 18px; opacity: 0.18; }
+      .tc-controls { max-width: 100%; margin-top: 28px; }
+      .tc-text { font-size: 16px; }
+      .tc-name { font-size: 11px; color: rgba(45,81,67,0.65); }
+    }
+
+    /* ── Realign Callout (new brand section) ── */
+    .realign-section {
+      position: relative;
+      overflow: hidden;
+      padding: 96px 16px;
+      text-align: center;
+    }
+    .realign-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+    .realign-video-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom, rgba(14,31,20,0.62) 0%, rgba(14,31,20,0.72) 100%);
+    }
+    @media (min-width: 768px) { .realign-section { padding: 100px 32px; } }
+    .realign-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+    .realign-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    .realign-word {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(56px, 10vw, 120px);
+      line-height: 1.05;
+      letter-spacing: 0.22em;
+      color: white;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      padding: 0.05em 0;
+    }
+    .realign-desc {
+      font-size: 16px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── CTA ── */
+    /* ── Final CTA ── */
+    .cta-section {
+      background: radial-gradient(ellipse at 60% 50%, rgba(58,98,80,0.6) 0%, transparent 60%), #1E3A2C;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 180px 32px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* subtle grain texture */
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+    }
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0;
+    }
+    .cta-heading {
+      margin-bottom: 0;
+      line-height: 1;
+    }
+    /* Preamble lines — whispered, uppercase, spaced */
+    .cta-invite-line {
+      display: block;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .cta-invite-line:nth-child(1),
+    .cta-invite-line:nth-child(2) {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+      line-height: 2.2;
+    }
+    .cta-invite-line:nth-child(1) { transition-delay: 0s; }
+    .cta-invite-line:nth-child(2) { transition-delay: 0.2s; }
+    /* Separator before "Just begin" */
+    .cta-invite-line:nth-child(3)::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 52px;
+      background: linear-gradient(to bottom, transparent, rgba(143,175,154,0.5), transparent);
+      margin: 32px auto 28px;
+    }
+    /* "Just begin" — the resolution, massive and commanding */
+    .cta-invite-line:nth-child(3) {
+      font-family: var(--serif);
+      font-size: clamp(80px, 11vw, 120px);
+      font-weight: 300;
+      font-style: italic;
+      color: #F0E8DA;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      padding: 0.05em 0;
+      transition-delay: 0.42s;
+      transition-duration: 1.1s;
+    }
+    .cta-support {
+      font-family: var(--sans);
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.70);
+      letter-spacing: 0.02em;
+      margin-top: 56px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.85s ease 0.7s, transform 0.85s ease 0.7s;
+    }
+    .cta-btn-wrap {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease 0.9s, transform 0.8s ease 0.9s;
+    }
+    .cta-microcopy {
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.52);
+      margin-top: 20px;
+      text-transform: uppercase;
+    }
+    /* Scroll trigger */
+    .cta-section.visible .cta-invite-line,
+    .cta-section.visible .cta-support,
+    .cta-section.visible .cta-btn-wrap {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Services Section ── */
+    .services-section {
+      background-color: var(--cream-light);
+      padding: 120px 16px 96px;
+    }
+    @media (min-width: 768px) { .services-section { padding: 120px 32px 112px; } }
+    .services-inner { max-width: 1200px; margin: 0 auto; }
+
+    .services-heading-wrap {
+      text-align: center;
+      margin-bottom: 72px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .services-heading-wrap.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .services-title {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(36px, 4.5vw, 56px);
+      line-height: 1.08;
+      color: var(--forest);
+      letter-spacing: -0.01em;
+    }
+    .services-title em { font-weight: 300; }
+    .services-subtext {
+      font-family: var(--sans);
+      font-size: 14.5px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--sage);
+      margin-top: 16px;
+      opacity: 0.85;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
+      align-items: start;
+    }
+    @media (min-width: 640px) {
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .service-card { background: var(--cream); }
+    .service-trigger { cursor: pointer; }
+    .service-img-wrap {
+      position: relative;
+      overflow: hidden;
+      height: 300px;
+    }
+    .service-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.65) brightness(0.93);
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  filter 0.5s ease;
+    }
+    .service-trigger:hover .service-img-wrap img {
+      transform: scale(1.03);
+      filter: saturate(0.78) brightness(0.97);
+    }
+    .service-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(45,81,67,0.16) 100%);
+      pointer-events: none;
+    }
+    .service-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 28px 20px;
+      border-bottom: 1px solid rgba(45,81,67,0.07);
+      transition: background 0.2s ease;
+    }
+    .service-trigger:hover .service-card-footer {
+      background: rgba(45,81,67,0.025);
+    }
+    .service-label {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: 22px;
+      color: var(--forest);
+      letter-spacing: 0.01em;
+    }
+    /* Plus / cross toggle icon */
+    .service-toggle {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      flex-shrink: 0;
+      transition: transform 0.38s ease;
+    }
+    .service-toggle::before,
+    .service-toggle::after {
+      content: '';
+      position: absolute;
+      background: var(--forest);
+      border-radius: 1px;
+      opacity: 0.45;
+      transition: opacity 0.3s ease;
+    }
+    .service-toggle::before {
+      width: 14px; height: 1px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .service-toggle::after {
+      width: 1px; height: 14px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .service-card.open .service-toggle { transform: rotate(45deg); }
+    .service-card.open .service-toggle::before,
+    .service-card.open .service-toggle::after { opacity: 0.7; }
+
+    /* Accordion expand */
+    .service-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 380ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .service-expand-inner {
+      padding: 36px 36px 40px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.32s ease 0.12s, transform 0.32s ease 0.12s;
+    }
+    .service-card.open .service-expand-inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .service-body {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(15px, 1.5vw, 18px);
+      line-height: 2.1;
+      color: rgba(45,81,67,0.75);
+      margin-bottom: 32px;
+      white-space: pre-line;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 767px) {
+
+      /* Nav — handled in new nav CSS above */
+
+      /* Hero */
+      .hero-video { object-position: 65% center; }
+      .hero-inner { padding: 0 20px 44px; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: 0; }
+      .hero-text h1 { font-size: clamp(36px, 9vw, 52px); margin-bottom: 6px; }
+      .hero-tagline { font-size: 11px; margin-bottom: 22px; }
+      .hero-scroll { display: none; }
+
+      /* Messages */
+      .messages-section { padding: 120px 20px 60px; }
+      .messages-heading { font-size: clamp(44px, 12vw, 96px); margin-bottom: 36px; }
+      .messages-text p { max-width: 100%; font-size: 16px; }
+
+
+      /* Studio */
+
+      /* REALIGN */
+      .realign-section { padding: 80px 20px 64px; }
+      .realign-word { font-size: clamp(48px, 14vw, 100px); letter-spacing: 0.12em; }
+      .realign-desc { font-size: 15px; }
+
+      /* CTA */
+      .cta-section { padding: 120px 28px 80px; min-height: 100vh; }
+      .cta-invite-line:nth-child(3) { font-size: clamp(68px, 18vw, 100px); }
+      .cta-support { margin-top: 44px; }
+      .cta-btn-wrap { margin-top: 32px; }
+
+      /* Services */
+      .services-section { padding: 100px 20px 72px; }
+      .services-heading-wrap { margin-bottom: 48px; }
+      .service-img-wrap { height: 240px; }
+      .service-card-footer { padding: 18px 20px 16px; }
+      .service-expand-inner { padding: 28px 20px 32px; }
+
+      /* Footer mobile — handled by footer-specific media query below */
+    }
+
+    /* ── Retreats Teaser ── */
+    .retreats-section {
+      position: relative;
+      width: 100%;
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    @media (max-width: 767px) { .retreats-section { min-height: 72vh; } }
+    .retreats-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url("brand_assets/Retreat.svg");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      animation: retreatDrift 18s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    @keyframes retreatDrift {
+      from { transform: scale(1.0); }
+      to   { transform: scale(1.04); }
+    }
+    .retreats-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom, rgba(14,31,20,0.55) 0%, rgba(14,31,20,0.72) 100%),
+        radial-gradient(ellipse at 50% 80%, rgba(14,31,20,0.4) 0%, transparent 60%);
+    }
+    .retreats-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+      max-width: 720px;
+    }
+    .retreats-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      font-weight: 400;
+      margin-bottom: 36px;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.9s ease 0s, transform 0.9s ease 0s;
+    }
+    .retreats-heading {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(52px, 8vw, 100px);
+      line-height: 1.0;
+      color: white;
+      letter-spacing: -0.02em;
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 1s ease 0.15s, transform 1s ease 0.15s;
+    }
+    .retreats-heading em { font-weight: 300; font-style: italic; }
+    .retreats-body {
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 16.5px;
+      line-height: 2.2;
+      color: rgba(255,255,255,0.72);
+      letter-spacing: 0.03em;
+      margin-bottom: 52px;
+      white-space: pre-line;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.9s ease 0.35s, transform 0.9s ease 0.35s;
+    }
+    .retreats-cta {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.9s ease 0.55s, transform 0.9s ease 0.55s;
+    }
+    /* Trigger all child transitions */
+    .retreats-section.visible .retreats-eyebrow,
+    .retreats-section.visible .retreats-heading,
+    .retreats-section.visible .retreats-body,
+    .retreats-section.visible .retreats-cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Human Presence ── */
+    .presence-section {
+      background-color: var(--cream);
+      padding: 120px 16px 112px;
+    }
+    @media (min-width: 768px) { .presence-section { padding: 120px 32px 124px; } }
+    .presence-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 1.1s ease, transform 1.1s ease;
+    }
+    .presence-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (min-width: 768px) {
+      .presence-inner { grid-template-columns: 2fr 3fr; gap: 88px; }
+    }
+    .presence-img-wrap { position: relative; }
+    .presence-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      filter: saturate(0.55) brightness(0.94);
+      display: block;
+    }
+    .presence-img-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 65%, rgba(240,232,218,0.22) 100%);
+      pointer-events: none;
+    }
+    .presence-heading {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: clamp(32px, 3.8vw, 48px);
+      color: var(--forest);
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .presence-divider {
+      width: 28px;
+      height: 1px;
+      background: var(--sage);
+      opacity: 0.45;
+      margin-bottom: 28px;
+    }
+    .presence-body {
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 2;
+      color: rgba(45,81,67,0.72);
+      margin-bottom: 36px;
+      white-space: pre-line;
+    }
+    .presence-founder {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15.5px;
+      line-height: 1.9;
+      color: rgba(45,81,67,0.70);
+    }
+    @media (max-width: 767px) {
+      .presence-section { padding: 100px 20px 80px; }
+      .presence-inner { gap: 36px; }
+      .presence-img { aspect-ratio: unset; height: 280px; width: 100%; object-fit: cover; }
+      .presence-text { text-align: center; }
+      .presence-divider { margin-left: auto; margin-right: auto; }
+      .presence-heading { font-size: clamp(28px, 7vw, 40px); }
+      .presence-body { max-width: 340px; margin-left: auto; margin-right: auto; font-size: 16px; }
+    }
+
+    /* ── Footer ── */
+    footer {
+      background-color: var(--forest-deep);
+      overflow: hidden;
+    }
+    .footer-emotional {
+      padding: 72px 32px 60px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-tagline-main {
+      font-family: var(--serif);
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(20px, 2.6vw, 34px);
+      color: rgba(240,232,218,0.68);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .footer-sub {
+      font-family: var(--sans);
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(143,175,154,0.8);
+      font-weight: 400;
+    }
+    .footer-nav {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px 48px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-nav a {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.62);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.22s ease;
+    }
+    .footer-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: rgba(143,175,154,0.45);
+      transition: width 0.25s ease;
+    }
+    .footer-nav a:hover { color: rgba(255,255,255,0.88); }
+    .footer-nav a:hover::after { width: 100%; }
+    .footer-legal {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 32px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer-legal-copy {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: rgba(255,255,255,0.52);
+      font-weight: 300;
+    }
+    .footer-legal-links { display: flex; gap: 24px; }
+    .footer-legal-links a {
+      font-family: var(--sans);
+      font-size: 11px;
+      color: rgba(255,255,255,0.52);
+      font-weight: 300;
+      transition: color 0.2s ease;
+    }
+    .footer-legal-links a:hover { color: rgba(255,255,255,0.88); }
+    @media (max-width: 767px) {
+      .footer-emotional { padding: 56px 20px 48px; }
+      .footer-nav { padding: 32px 20px; gap: 18px 32px; }
+      .footer-nav a { min-height: 44px; display: inline-flex; align-items: center; }
+      .footer-legal { padding: 16px 20px 24px; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+      .footer-legal-links { gap: 20px; }
+      .footer-legal-copy { font-size: 12px; }
+      .footer-legal-links a { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ───────────────────────────────────────── -->
+  <nav id="nav">
+    <a href="/"><img
+      src="brand_assets/soul strecth standee-06.png"
+      alt="Soul Stretch"
+      class="nav-logo-img"></a>
+    <div class="nav-links">
+      <a href="#messages"  class="nav-item">Experience</a>
+      <a href="#gallery"   class="nav-item">Services</a>
+      <a href="#retreats"  class="nav-item">Retreats</a>
+      <a
+        href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20start%20my%20first%20session"
+        target="_blank"
+        rel="noopener"
+        class="nav-start btn-outline-white">Start</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Mobile full-screen menu ──────────────────── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#messages" class="mob-link">Experience</a>
+    <a href="#gallery"  class="mob-link">Services</a>
+    <a href="#retreats" class="mob-link">Retreats</a>
+    <a
+      href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20start%20my%20first%20session"
+      target="_blank"
+      rel="noopener"
+      class="mob-link mobile-menu-start btn-outline-white">Start</a>
+  </div>
+
+  <!-- ── Hero ──────────────────────────────────────── -->
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
+      <source src="brand_assets/Hero Video 4.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <h1>Where you come<br>back to <em>yourself.</em></h1>
+        <p class="hero-tagline">move. breathe. realign</p>
+        <a href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20start%20my%20first%20session" target="_blank" rel="noopener" class="btn-outline-white">Start</a>
+      </div>
+      <div class="hero-scroll">
+        <span>Scroll</span>
+        <div class="hero-scroll-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Soul Messages ──────────────────────────────── -->
+  <section class="messages-section" id="messages">
+    <div class="inner">
+      <h2 class="messages-heading"><em>More than</em> a practice</h2>
+      <div class="messages-body">
+        <div class="messages-text">
+          <p class="msg-open">At Soul Stretch, yoga is not something you complete.<br>
+It is something you return to.</p>
+          <p>A space where the noise softens,<br>
+the breath steadies,<br>
+and the body begins to feel like home again.</p>
+          <p>Each session brings together movement, breath, and sound.</p>
+          <p>Yoga to release what the body has been holding.<br>
+Breathwork to create space within.<br>
+Sound to quiet what words cannot.</p>
+          <p class="msg-muted">With guidance in nourishment<br>
+to support you beyond the studio.</p>
+          <p class="msg-muted">Not separate offerings<br>
+but one continuous rhythm of care.</p>
+          <p class="msg-muted">This is not about pushing limits<br>
+or performing postures.</p>
+          <p class="msg-close">It is about how you feel when you leave<br>
+<span class="msg-word">lighter</span>
+<span class="msg-word">clearer</span>
+<span class="msg-word">more present within yourself.</span></p>
+        </div>
+        <div>
+          <img
+            class="messages-img"
+            src="brand_assets/More than a practice.svg"
+            alt="Soul Stretch studio">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── REALIGN Callout ───────────────────────────── -->
+  <section class="realign-section">
+    <video class="realign-video" autoplay muted loop playsinline aria-hidden="true">
+      <source src="brand_assets/Realign.mp4" type="video/mp4">
+    </video>
+    <div class="realign-video-overlay"></div>
+    <div class="realign-inner">
+      <p class="realign-eyebrow">The Soul Stretch Idea</p>
+      <div class="realign-word">REALIGN</div>
+      <p class="realign-desc">Not fitness. Not spirituality. The feeling of being returned to yourself after the world has taken pieces of you. That is what we build every session around.</p>
+    </div>
+  </section>
+
+  <!-- ── Services / Soul Artistry ─────────────────── -->
+  <section class="services-section" id="gallery">
+    <div class="services-inner">
+
+      <div class="services-heading-wrap" id="servicesHeading">
+        <h2 class="services-title">Soul Artistry <em>in Motion</em></h2>
+        <p class="services-subtext">Start where your body feels it most</p>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- Yoga -->
+        <div class="service-card">
+          <div class="service-trigger">
+            <div class="service-img-wrap">
+              <img src="brand_assets/Yoga.svg" alt="Yoga">
+            </div>
+            <div class="service-card-footer">
+              <span class="service-label">Yoga</span>
+              <span class="service-toggle" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="service-expand">
+            <div class="service-expand-inner">
+              <p class="service-body">Slow, guided movement
+that helps the body release stored tension
+
+No pressure to perform
+No need to be flexible
+
+Just space to move
+and feel like yourself again</p>
+              <a class="btn-service" href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20ask%20about%20yoga%20sessions" target="_blank" rel="noopener">Ask about yoga</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sound Healing -->
+        <div class="service-card">
+          <div class="service-trigger">
+            <div class="service-img-wrap">
+              <img src="brand_assets/Sound Healing.svg" alt="Sound Healing">
+            </div>
+            <div class="service-card-footer">
+              <span class="service-label">Sound Healing</span>
+              <span class="service-toggle" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="service-expand">
+            <div class="service-expand-inner">
+              <p class="service-body">You don't have to understand it
+to feel it
+
+The body settles
+The breath deepens
+
+And something you've been holding
+begins to let go</p>
+              <a class="btn-service" href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20try%20a%20sound%20healing%20session" target="_blank" rel="noopener">Try sound healing</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nutrition -->
+        <div class="service-card">
+          <div class="service-trigger">
+            <div class="service-img-wrap">
+              <img src="brand_assets/Nutrition.svg" alt="Nutrition">
+            </div>
+            <div class="service-card-footer">
+              <span class="service-label">Nutrition</span>
+              <span class="service-toggle" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="service-expand">
+            <div class="service-expand-inner">
+              <p class="service-body">Not a diet
+Not restriction
+
+A way to support your body
+with what it actually needs
+
+Simple, sustainable
+grounded in how you live</p>
+              <a class="btn-service" href="https://wa.me/918630555820?text=Hi%2C%20I%27m%20interested%20in%20nutrition%20consultation" target="_blank" rel="noopener">Talk to us</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Retreats Teaser ──────────────────────────── -->
+  <section class="retreats-section" id="retreats">
+    <div class="retreats-bg"></div>
+    <div class="retreats-overlay"></div>
+    <div class="retreats-content">
+      <p class="retreats-eyebrow">Soul Stretch Retreats</p>
+      <h2 class="retreats-heading">Step away<br><em>Go deeper</em></h2>
+      <p class="retreats-body">A few days to slow down
+to reset
+to return</p>
+      <div class="retreats-cta">
+        <a
+          class="btn-outline-white"
+          href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20upcoming%20retreats"
+          target="_blank"
+          rel="noopener">Ask about the next retreat</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Final CTA ────────────────────────────────── -->
+  <section class="cta-section" id="journey">
+    <div class="cta-inner">
+      <h2 class="cta-heading">
+        <span class="cta-invite-line">You don't need a plan</span>
+        <span class="cta-invite-line">You don't need to prepare</span>
+        <span class="cta-invite-line"><em>Just begin</em></span>
+      </h2>
+      <p class="cta-support">Come as you are<br>We'll guide you from there</p>
+      <div class="cta-btn-wrap">
+        <a
+          class="btn-outline-white"
+          href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20start%20my%20first%20session"
+          target="_blank"
+          rel="noopener">Message on WhatsApp</a>
+        <p class="cta-microcopy">First session. No pressure.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Testimonials Carousel ────────────────────── -->
+  <div class="testimonials-carousel" id="testimonials">
+    <div class="testimonials-header">
+      <p class="testimonials-eyebrow">Voices from the Mat</p>
+      <h2 class="testimonials-heading">What our community <em>feels</em></h2>
+    </div>
+
+    <div class="tc-track-wrap" id="tcWrap">
+      <div class="tc-track" id="tcTrack">
+        <div class="tc-card">
+          <p class="tc-text">"After my third session I finally slept through the night. It was not about flexibility. It was about finally feeling at home in my own body again."</p>
+          <p class="tc-name">— Priya M., Member since 2024</p>
+        </div>
+        <div class="tc-card">
+          <p class="tc-text">"I came expecting a workout. What I found was something closer to a homecoming. Each session peels back a little more of the tension I didn't know I was carrying."</p>
+          <p class="tc-name">— Rohan K., Member since 2023</p>
+        </div>
+        <div class="tc-card">
+          <p class="tc-text">"The combination of movement, breathwork, and sound is unlike anything I have tried before. I leave each session feeling lighter, clearer, and more myself."</p>
+          <p class="tc-name">— Ananya S., Member since 2024</p>
+        </div>
+        <div class="tc-card">
+          <p class="tc-text">"Soul Stretch changed the way I move through the world. Not just on the mat, but in how I carry myself through the day. It is a practice that lives with you."</p>
+          <p class="tc-name">— Meera T., Member since 2022</p>
+        </div>
+        <div class="tc-card">
+          <p class="tc-text">"Three months in and I finally understand what they mean by realignment. It is not about postures. It is about coming back to yourself after the world has pulled you apart."</p>
+          <p class="tc-name">— Arjun P., Member since 2025</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tc-controls">
+      <div class="tc-dots" id="tcDots">
+        <button class="tc-dot active" aria-label="Go to testimonial 1"></button>
+        <button class="tc-dot" aria-label="Go to testimonial 2"></button>
+        <button class="tc-dot" aria-label="Go to testimonial 3"></button>
+        <button class="tc-dot" aria-label="Go to testimonial 4"></button>
+        <button class="tc-dot" aria-label="Go to testimonial 5"></button>
+      </div>
+      <div class="tc-progress">
+        <div class="tc-progress-bar" id="tcProgressBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Human Presence ───────────────────────────── -->
+  <section class="presence-section">
+    <div class="presence-inner" id="presenceInner">
+      <div class="presence-img-wrap">
+        <img
+          class="presence-img"
+          src="brand_assets/Neha.svg"
+          alt="Neha">
+      </div>
+      <div class="presence-text">
+        <h2 class="presence-heading">A space held with care</h2>
+        <div class="presence-divider"></div>
+        <p class="presence-body">Guided by experienced practitioners
+who understand the body, not just the practice
+
+You're supported
+without being pushed</p>
+        <p class="presence-founder">Built with the intention<br>
+to create a space where people can return to themselves<br>
+— Neha</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────── -->
+  <footer>
+    <div class="footer-emotional">
+      <p class="footer-tagline-main">Where you come back to yourself</p>
+      <p class="footer-sub">In-studio &middot; Online</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="#messages">Experience</a>
+      <a href="#gallery">Services</a>
+      <a href="#retreats">Retreats</a>
+      <a href="https://instagram.com/soulstretch_wellness" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://wa.me/918630555820?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20Soul%20Stretch" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+    </nav>
+    <div class="footer-legal">
+      <p class="footer-legal-copy">&copy; 2026 Soul Stretch</p>
+      <div class="footer-legal-links">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-service">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Hamburger
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      // next frame so display:flex renders before opacity transitions
+      requestAnimationFrame(() => mobileMenu.classList.add('open-active'));
+      hamburger.classList.add('open');
+      hamburger.setAttribute('aria-label', 'Close menu');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      mobileMenu.classList.remove('open-active');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-label', 'Open menu');
+      document.body.style.overflow = '';
+      // wait for fade-out before hiding
+      setTimeout(() => mobileMenu.classList.remove('open'), 350);
+    }
+
+    hamburger.addEventListener('click', () => {
+      mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+    });
+    document.querySelectorAll('.mob-link').forEach(link => {
+      link.addEventListener('click', () => closeMenu());
+    });
+
+    // ── CTA fade-in ──
+    (function() {
+      const el = document.getElementById('journey');
+      if (el && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.2 }).observe(el);
+      }
+    })();
+
+    // ── Retreats fade-in ──
+    (function() {
+      const el = document.getElementById('retreats');
+      if (el && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.18 }).observe(el);
+      }
+    })();
+
+    // ── Human Presence fade-in ──
+    (function() {
+      const el = document.getElementById('presenceInner');
+      if (el && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.15 }).observe(el);
+      }
+    })();
+
+    // ── Services Accordion ──
+    (function() {
+      const cards = document.querySelectorAll('.service-card');
+
+      cards.forEach(card => {
+        card.querySelector('.service-trigger').addEventListener('click', () => {
+          const isOpen = card.classList.contains('open');
+
+          // Close all cards
+          cards.forEach(c => {
+            c.classList.remove('open');
+            c.querySelector('.service-expand').style.maxHeight = '0';
+          });
+
+          // Open this card if it was closed
+          if (!isOpen) {
+            card.classList.add('open');
+            const expand = card.querySelector('.service-expand');
+            expand.style.maxHeight = expand.scrollHeight + 'px';
+
+            // On mobile: scroll expand content into view
+            if (window.innerWidth < 640) {
+              setTimeout(() => {
+                expand.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }, 120);
+            }
+          }
+        });
+      });
+
+      // Heading fade-in on scroll
+      const heading = document.getElementById('servicesHeading');
+      if (heading && 'IntersectionObserver' in window) {
+        const obs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.25 });
+        obs.observe(heading);
+      }
+    })();
+
+    // ── Testimonials Carousel ──
+    (function() {
+      const track       = document.getElementById('tcTrack');
+      const wrap        = document.getElementById('tcWrap');
+      const dots        = document.querySelectorAll('#tcDots .tc-dot');
+      const progressBar = document.getElementById('tcProgressBar');
+      const cards       = document.querySelectorAll('.tc-card');
+      const total       = cards.length; // 5
+      let current       = 0;
+      const DURATION    = 4000; // ms per slide
+      let rafId, startTime;
+
+      function maxIndex() {
+        return total - 1; // always 1 card visible
+      }
+
+      function slideTo(index, resetProgress) {
+        current = Math.max(0, Math.min(index, maxIndex()));
+        const cardW = cards[0].getBoundingClientRect().width;
+        track.style.transform = `translateX(-${current * cardW}px)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        if (resetProgress !== false) {
+          startTime = performance.now();
+        }
+      }
+
+      function animateProgress(ts) {
+        if (!startTime) startTime = ts;
+        const elapsed = ts - startTime;
+        const pct = Math.min((elapsed / DURATION) * 100, 100);
+        progressBar.style.width = pct + '%';
+        if (pct < 100) {
+          rafId = requestAnimationFrame(animateProgress);
+        } else {
+          slideTo(current >= maxIndex() ? 0 : current + 1);
+          rafId = requestAnimationFrame(animateProgress);
+        }
+      }
+
+      function startAuto() {
+        cancelAnimationFrame(rafId);
+        startTime = performance.now();
+        rafId = requestAnimationFrame(animateProgress);
+      }
+
+      function stopAuto() {
+        cancelAnimationFrame(rafId);
+      }
+
+      // Pause on hover
+      wrap.addEventListener('mouseenter', stopAuto);
+      wrap.addEventListener('mouseleave', startAuto);
+
+      // Dot buttons
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          stopAuto();
+          slideTo(Math.min(i, maxIndex()));
+          startAuto();
+        });
+      });
+
+      // Touch / swipe
+      let touchStartX = 0;
+      wrap.addEventListener('touchstart', e => {
+        touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+      wrap.addEventListener('touchend', e => {
+        const delta = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 40) {
+          stopAuto();
+          slideTo(delta > 0
+            ? (current >= maxIndex() ? 0 : current + 1)
+            : (current <= 0 ? maxIndex() : current - 1));
+          startAuto();
+        }
+      }, { passive: true });
+
+      // Re-calc on resize
+      window.addEventListener('resize', () => slideTo(current, false), { passive: true });
+
+      // Boot
+      startAuto();
+    })();
+  </script>
+
+</body>
+</html>

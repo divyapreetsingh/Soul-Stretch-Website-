@@ -1,0 +1,7 @@
+# macOS
+.DS_Store
+
+# Dev tools (local only)
+temporary screenshots/
+screenshot.py
+serve.mjs
