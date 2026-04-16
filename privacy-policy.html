@@ -4,9 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy — Soul Stretch</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Lenia Sans';
+      src: url('fonts/LeniaSans-Light.ttf') format('truetype');
+      font-weight: 300; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Lenia Sans';
+      src: url('fonts/LeniaSans-Regular.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Lenia Sans';
+      src: url('fonts/LeniaSans-Medium.ttf') format('truetype');
+      font-weight: 500; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Swarsh Daisy';
+      src: url('fonts/Swarsh Daisy-Regular.woff2') format('woff2'),
+           url('fonts/Swarsh Daisy-Regular.woff') format('woff'),
+           url('fonts/Swarsh Daisy-Regular.otf') format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+  </style>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     * { scrollbar-width: thin; scrollbar-color: #2D5143 transparent; }
@@ -16,13 +37,41 @@
       --forest-deep: #1A3228;
       --sage:        #8FAF9A;
       --cream-light: #FAF6EF;
-      --serif: 'Cormorant Garamond', Georgia, serif;
-      --sans:  'Inter', system-ui, sans-serif;
+      --font-primary: 'Lenia Sans', system-ui, sans-serif;
+      --font-accent:  'Swarsh Daisy', cursive;
+
+      /* ── Type scale ── */
+      --type-h1:      48px;
+      --type-h2:      36px;
+      --type-body:    17px;
+      --type-small:   15px;
+      --type-ui:      11px;
+      --type-eyebrow: 10px;
+
+      /* ── Weights ── */
+      --weight-light:   300;
+      --weight-regular: 400;
+      --weight-medium:  500;
+
+      /* ── Leading ── */
+      --leading-h1:   1.12;
+      --leading-h2:   1.2;
+      --leading-body: 1.85;
+
+      /* ── Tracking ── */
+      --tracking-tight:   -0.02em;
+      --tracking-snug:    -0.01em;
+      --tracking-wide:     0.14em;
+      --tracking-wider:    0.18em;
+      --tracking-widest:   0.22em;
     }
 
     html { font-size: 16px; line-height: 1.6; }
     body {
-      font-family: var(--sans);
+      font-family: var(--font-primary);
+      font-size: var(--type-body);
+      font-weight: var(--weight-light);
+      line-height: var(--leading-body);
       background-color: var(--cream-light);
       color: var(--forest);
       -webkit-font-smoothing: antialiased;
@@ -56,9 +105,7 @@
       gap: 40px;
     }
     .nav-links a.nav-item {
-      font-family: var(--sans);
       font-size: 12px;
-      font-weight: 300;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.62);
@@ -76,9 +123,8 @@
     .nav-links a.nav-item:hover { color: rgba(255,255,255,0.95); }
     .nav-links a.nav-item:hover::after { width: 100%; }
     .nav-start {
-      font-family: var(--sans);
-      font-size: 11px;
-      font-weight: 400;
+      font-size: var(--type-ui);
+      font-weight: var(--weight-regular);
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.85);
@@ -127,66 +173,51 @@
     .mobile-menu.open { display: flex; }
     .mobile-menu.open-active { opacity: 1; }
     .mob-link {
-      font-family: var(--serif);
-      font-size: clamp(36px, 9vw, 56px);
-      font-weight: 300;
+      font-size: clamp(32px, 8vw, 48px);
       color: rgba(255,255,255,0.7);
-      letter-spacing: 0.01em;
+      letter-spacing: 0.02em;
       padding: 14px 0;
       transition: color 0.2s ease;
     }
     .mob-link:hover { color: white; }
     .mobile-menu-start {
       margin-top: 36px;
-      font-size: 11px !important;
-      font-weight: 400 !important;
-      letter-spacing: 0.18em !important;
+      font-size: var(--type-ui);
+      font-weight: var(--weight-regular);
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.8) !important;
-      border: 1px solid rgba(255,255,255,0.3) !important;
-      padding: 13px 36px !important;
-      font-family: var(--sans) !important;
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 13px 36px;
       background: transparent;
     }
-    .mobile-menu-start:hover { color: var(--forest-deep) !important; }
+    .mobile-menu-start:hover { color: var(--forest-deep); }
     @media (max-width: 767px) {
       #nav { padding: 16px 20px; }
-      #nav.scrolled { padding: 12px 20px; }
       .nav-logo-img { height: 80px; }
       .nav-links { display: none; }
       .hamburger { display: flex; }
     }
 
-    /* ── Hero ── */
+    /* ── Page Hero ── */
     .page-hero {
       padding: 180px 32px 64px;
       text-align: center;
       border-bottom: 1px solid rgba(45,81,67,0.07);
     }
+    /* .t-eyebrow supplies size/weight/tracking/transform */
     .page-hero-eyebrow {
-      font-family: var(--sans);
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
       color: var(--sage);
-      font-weight: 400;
       margin-bottom: 20px;
-      opacity: 0.8;
     }
+    /* H1 — .t-h1 supplies size/weight/leading/tracking */
     .page-hero-title {
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: clamp(36px, 5vw, 60px);
       color: var(--forest);
-      letter-spacing: -0.02em;
-      line-height: 1.05;
       margin-bottom: 20px;
     }
     .page-hero-date {
-      font-family: var(--sans);
       font-size: 12px;
       color: rgba(45,81,67,0.62);
-      font-weight: 300;
       letter-spacing: 0.05em;
     }
     .page-hero-rule {
@@ -201,15 +232,13 @@
     .page-content {
       max-width: 700px;
       margin: 0 auto;
-      padding: 72px 32px 100px;
+      padding: 80px 32px 100px;
     }
+    /* Policy lead — slightly larger than body for intro */
     .policy-lead {
-      font-family: var(--serif);
-      font-style: italic;
-      font-weight: 300;
-      font-size: clamp(18px, 2vw, 23px);
+      font-size: 20px;
       line-height: 1.8;
-      color: #3D6B59;
+      color: rgba(45,81,67,0.85);
       margin-bottom: 52px;
       padding-bottom: 40px;
       border-bottom: 1px solid rgba(45,81,67,0.08);
@@ -217,21 +246,17 @@
     .policy-section {
       margin-bottom: 44px;
     }
+    /* Section label — .t-ui style manually (medium weight intentional) */
     .policy-section h2 {
-      font-family: var(--sans);
-      font-size: 12px;
-      font-weight: 500;
+      font-size: var(--type-ui);
+      font-weight: var(--weight-medium);
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #3D6B59;
+      color: rgba(45,81,67,0.7);
       margin-bottom: 16px;
     }
     .policy-section p,
     .policy-section ul {
-      font-family: var(--sans);
-      font-size: 17px;
-      font-weight: 300;
-      line-height: 1.85;
       color: rgba(45,81,67,0.8);
     }
     .policy-section ul {
@@ -241,7 +266,7 @@
     .policy-section ul li {
       padding-left: 20px;
       position: relative;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .policy-section ul li::before {
       content: '—';
@@ -251,7 +276,7 @@
       opacity: 0.6;
       font-size: 12px;
     }
-    .policy-section p + p { margin-top: 14px; }
+    .policy-section p + p { margin-top: 16px; }
 
     /* ── Footer ── */
     footer {
@@ -259,27 +284,20 @@
       overflow: hidden;
     }
     .footer-emotional {
-      padding: 72px 32px 60px;
+      padding: 80px 32px 64px;
       text-align: center;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
+    /* Footer tagline — .t-accent supplies font/weight/style */
     .footer-tagline-main {
-      font-family: var(--serif);
-      font-weight: 300;
-      font-style: italic;
-      font-size: clamp(20px, 2.6vw, 34px);
-      color: rgba(240,232,218,0.68);
-      letter-spacing: -0.01em;
+      font-size: clamp(26px, 3vw, 44px);
+      color: rgba(240,235,224,0.78);
       line-height: 1.2;
       margin-bottom: 14px;
     }
+    /* .t-eyebrow supplies size/weight/tracking/transform */
     .footer-sub {
-      font-family: var(--sans);
-      font-size: 10.5px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
       color: rgba(143,175,154,0.8);
-      font-weight: 400;
     }
     .footer-nav {
       max-width: 920px;
@@ -293,9 +311,8 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .footer-nav a {
-      font-family: var(--sans);
-      font-size: 11px;
-      font-weight: 400;
+      font-size: var(--type-ui);
+      font-weight: var(--weight-regular);
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.62);
@@ -324,24 +341,22 @@
       gap: 10px;
     }
     .footer-legal-copy {
-      font-family: var(--sans);
-      font-size: 11px;
+      font-size: var(--type-ui);
       color: rgba(255,255,255,0.52);
-      font-weight: 300;
     }
     .footer-legal-links { display: flex; gap: 24px; }
     .footer-legal-links a {
-      font-family: var(--sans);
-      font-size: 11px;
+      font-size: var(--type-ui);
       color: rgba(255,255,255,0.52);
-      font-weight: 300;
       transition: color 0.2s ease;
     }
     .footer-legal-links a:hover { color: rgba(255,255,255,0.88); }
 
     @media (max-width: 767px) {
       .page-hero { padding: 140px 20px 48px; }
+      .page-hero-title { font-size: 36px; }
       .page-content { padding: 52px 20px 80px; }
+      .policy-lead { font-size: 18px; }
       .footer-emotional { padding: 56px 20px 48px; }
       .footer-nav { padding: 32px 20px; gap: 18px 32px; }
       .footer-nav a { min-height: 44px; display: inline-flex; align-items: center; }
@@ -350,7 +365,6 @@
       .footer-legal-copy { font-size: 12px; }
       .footer-legal-links a { font-size: 12px; }
       .policy-section p, .policy-section ul { font-size: 16px; }
-      .policy-section h2 { font-size: 12px; }
     }
   </style>
 </head>
@@ -380,10 +394,10 @@
        target="_blank" rel="noopener" class="mob-link mobile-menu-start">Start</a>
   </div>
 
-  <!-- Hero -->
+  <!-- Page Hero: Eyebrow → Headline → Date -->
   <div class="page-hero">
-    <p class="page-hero-eyebrow">Legal</p>
-    <h1 class="page-hero-title">Privacy Policy</h1>
+    <p class="page-hero-eyebrow t-eyebrow">Legal</p>
+    <h1 class="page-hero-title t-h1">Privacy Policy</h1>
     <p class="page-hero-date">Effective Date: April 12, 2026</p>
     <div class="page-hero-rule"></div>
   </div>
@@ -437,8 +451,8 @@
   <!-- Footer -->
   <footer>
     <div class="footer-emotional">
-      <p class="footer-tagline-main">Where you come back to yourself</p>
-      <p class="footer-sub">In-studio &middot; Online</p>
+      <p class="footer-tagline-main t-accent">Where you come back to yourself</p>
+      <p class="footer-sub t-eyebrow">In-studio &middot; Online</p>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
       <a href="/#messages">Experience</a>
@@ -450,8 +464,8 @@
     <div class="footer-legal">
       <p class="footer-legal-copy">&copy; 2026 Soul Stretch</p>
       <div class="footer-legal-links">
-        <a href="/privacy-policy">Privacy Policy</a>
-        <a href="/terms-of-service">Terms of Service</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <a href="/terms-of-service.html">Terms of Service</a>
       </div>
     </div>
   </footer>
